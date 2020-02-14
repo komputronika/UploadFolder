@@ -12,7 +12,7 @@ Supported browser: Chrome, Edge and Firefox
 
 ### Screenshot
 
-<a href="https://ibb.co/4gybWnY"><img src="https://i.ibb.co/Hpvc7fx/screenshot-localhost-2020-02-14-11-22-30.png" alt="screenshot-localhost-2020-02-14-11-22-30" border="0"></a>
+<a href="https://imgur.com/bCUHbvv"><img src="https://i.imgur.com/bCUHbvv.png" title="source: imgur.com" /></a>
 
 ### Todo
 
