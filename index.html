@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload Folder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Upload Folder Demo</h1>
+
+<p>Source code: <a href="https://github.com/komputronika/UploadFolder">https://github.com/komputronika/UploadFolder</a></p>
+
+<p>Pure Javascript and pure PHP without any library</p>
+
+<p>This page allows you to pick a folder via a HTML file input. All files (including nested files) inside that folder are added to the input's <code>files</code> list. This attribute is supported in Chrome, Edge, and Firefox.</p>
+
+<p>Choose a folder, and all files in that folder will be uploaded recursivelty.</p>
+
+<div class="picker"><input type="file" id="picker" name="fileList" webkitdirectory multiple></div>
+
+<h3>Percentage</h3>
+<span id="box">0%</span>
+
+<h3>Files Uploaded</h3>
+<ul id="listing"></ul>
+
+<script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+

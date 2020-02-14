@@ -1,0 +1,30 @@
+body {
+  max-width: 48em;
+  margin: auto;
+  font-family: Roboto, "Open Sans", "Noto Sans", sans-serif;
+  line-height: 1.5;
+}
+
+code {
+  font-family: Roboto Mono, monospace;
+  font-size: 90%;
+}
+
+.picker {
+  background-color: #eee;
+  padding: 1em;
+}
+
+#listing {
+    padding-left:1rem;
+}
+
+#listing li {
+    padding-left: 0;
+}
+
+#box {
+    color: #005aa0;
+    font-size: 2rem;
+    font-weight: bold;
+}
