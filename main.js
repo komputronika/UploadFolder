@@ -33,7 +33,6 @@ picker.addEventListener('change', e => {
 
 });
 
-
 sendFile = function(file, path) {
 
     var item = document.createElement('li');
