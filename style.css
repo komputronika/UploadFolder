@@ -33,6 +33,7 @@ code {
     width: 100%;
     height: 30px;
     background-color: #ddd;
+    border-radius: 5px;
 }
 
 #myBar {
@@ -43,4 +44,5 @@ code {
     text-align: center;
     vertical-align: middle;
     font-weight: bold;
+    border-radius: 5px;
 }
