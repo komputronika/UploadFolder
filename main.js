@@ -6,39 +6,26 @@ let elem = document.getElementById("myBar");
 let counter = 1;
 let total = 0;
 
-// When button input change, process it
+// On button input change (picker), process it
 picker.addEventListener('change', e => {
 
-    // Reset previous upload
+    // Reset previous upload progress
     elem.style.width = "0px";
     listing.innerHTML = "None";
 
     // Get total of files in that folder
-    //total = Array.from(e.target.files).length;
     total = picker.files.length;
     counter = 1;
 
-    // Process every files
-    // Note: Array.from() needed for Edge
-
-    /* for (let file of Array.from(e.target.files)) {
-
-        // Upload a file
-        sendFile(file, file.webkitRelativePath);
-
-        //item = document.createElement('li');
-        //item.textContent = file.webkitRelativePath;
-        //listing.appendChild(item);
-
-    }; */
-
+    // Process every single file
     for (var i = 0; i < picker.files.length; i++) {
         var file = picker.files[i];
         sendFile(file, file.webkitRelativePath);
     }
-
 });
 
+
+// Function to send a file, call PHP backend 
 sendFile = function(file, path) {
 
     var item = document.createElement('li');
@@ -47,15 +34,18 @@ sendFile = function(file, path) {
 
     request.responseType = 'text';
 
-    // Onload handler
+    // HTTP onload handler
     request.onload = function() {
         if (request.readyState === request.DONE) {
             if (request.status === 200) {
                 console.log(request.responseText);
 
                 // Add file name to list
-                /* item.textContent = request.responseText;
-                listing.appendChild(item); */
+                /* 
+                item.textContent = request.responseText;
+                listing.appendChild(item); 
+                */
+
                 listing.innerHTML = request.responseText + " (" + counter + " of " + total + " ) ";
 
                 // Show percentage
@@ -69,14 +59,14 @@ sendFile = function(file, path) {
                 counter = counter + 1;
             }
             if (counter >= total) {
-                listing.innerHTML = "Uploading " + total + " file is done!";
+                listing.innerHTML = "Uploading " + total + " file(s) is done!";
             }
         }
     };
 
-    // Set variable 
-    formData.set('myfile', file); // One object file
-    formData.set('path', path); // String of file's full path
+    // Set post variables 
+    formData.set('file', file); // One object file
+    formData.set('path', path); // String of local file's path 
 
     // Do request
     request.open("POST", 'process.php');
