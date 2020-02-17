@@ -1,109 +1,99 @@
 <?php
 
-error_reporting( 0 & ~E_WARNING & ~E_STRICT & ~E_NOTICE & ~E_DEPRECATED);
-
-class Upload {
+Class Upload 
+{
 
     protected $folder = "upload";
-    protected $post;
     protected $errors = [];
     protected $log = "log.txt";
     protected $path;
     protected $curdir;
     protected $extensions = "*";
-
-    public function __construct() {
-        if (!is_dir($this->folder)) mkdir($this->folder, 0700);
+    
+    public function __construct() 
+    {
+        error_reporting( 0 & ~E_WARNING & ~E_STRICT & ~E_NOTICE & ~E_DEPRECATED);
         $this->curdir = getcwd();
-        unlink("log.txt");
     }
 
-    public function set_extensions($extensions) {
-
+    public function set_extensions($extensions) 
+    {
+        $this->extensions = $extensions;
     }
 
-    public function set_log($log_filename) {
-
+    public function set_log($log_filename) 
+    {
+        $this->log = $log_filename;
     }
 
-    public function set_folder($folder_name) {
-
+    public function set_folder($folder_name) 
+    {
+        $this->folder = $folder_name;
     }
 
-    public function process($post) {
+    public function process($path, $files) 
+    {
+        // Log string
+        $log_string     = "";
 
-    }
+        // Original path from user's device
+        $original_path  = dirname($path); 
 
-}
-    
+        // Extract file's data
+        $file_name      = $files['name'];
+        $file_size      = $files['size'];
+        $file_tmp       = $files['tmp_name'];
+        $file_type      = $files['type'];
+        $file_ext       = strtolower(end(explode('.',$file_name)));
 
-    
-    
-    //if (!is_dir("upload")) mkdir("upload", 0700);
-
-    $currentDir = getcwd();
-    $uploadDirectory = "/upload/";
-    
-    $errors = []; 
-
-    $fileExtensions = ['jpeg','jpg','png']; // Get all the file extensions
-
-    $fileName = $_FILES['myfile']['name'];
-    $fileSize = $_FILES['myfile']['size'];
-    $fileTmpName  = $_FILES['myfile']['tmp_name'];
-    $fileType = $_FILES['myfile']['type'];
-    $fileExtension = strtolower(end(explode('.',$fileName)));
-
-    $uploadPath = $currentDir . $uploadDirectory . basename($fileName); 
-
-    if (isset($_POST['submit'])) {
-
-        /*if (! in_array($fileExtension,$fileExtensions)) {
-            $errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
-        }*/
-
-        /*if ($fileSize > 2000000) {
-            $errors[] = "This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
-        }*/
-
-        ob_start();
-        
-        $a = explode("/",$_POST["path"]);
-        array_pop($a);
-        
-        print_r($a);
-        
-        $path = $currentDir. $uploadDirectory. implode("/", $a);
-        
-        echo $path."\n\n";
-        
-        mkdir($path, 0700, true);
-        
-        $uploadPath = $path . "/" . basename($fileName); 
-        
-        echo $uploadPath."\n\n";
-        
-        if (empty($errors)) {
-            $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
-
-            if ($didUpload) {
-                echo "The file " . basename($fileName) . " has been uploaded";
-            } else {
-                echo "An error occurred somewhere. Try again or contact the admin";
-            }
-        } else {
-            foreach ($errors as $error) {
-                echo $error . "These are the errors" . "\n";
+        // Check for allowed extensions
+        if ($this->extensions != "*") {
+            if (!in_array($file_ext, $this->extensions)) {
+                $this->errors[] = "This file extension ($file_ext) is not allowed.";
             }
         }
-        echo "\n\n";
+
+        // If not error
+        if (empty($this->errors)) {
+
+            // Real server's dir, eg => /var/www/myfolder/upload
+            $base = $this->curdir . DIRECTORY_SEPARATOR . $this->folder;
+            
+            // Upload dir, eg: /var/www/myfolder/upload/MyPictures
+            $upload_dir  = $base . DIRECTORY_SEPARATOR . $original_path ;
+
+            // Upload path, eg: /var/www/myfolder/upload/MyPictures/photo1.jpg
+            $upload_path = $upload_dir . DIRECTORY_SEPARATOR. basename($file_name) ;
+
+            // Create target dir if not exist    
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0700, true);
+
+            /* 
+            $log_string .= "BASE = ".$base."\n";
+            $log_string .= "ORIGINAL_PATH = ".$original_path."\n";
+            $log_string .= "UPLOAD_PATH  = ".$upload_path."\n"; 
+            */
+
+            $log_string .=  "Upload to $upload_path\n";
+
+            $success = move_uploaded_file($file_tmp, $upload_path);
+            if ($success) {
+                $log_string .= "The file " . basename($file_name) . " has been uploaded\n\n";
+            } else {
+                $log_string .= "The file " . basename($file_name) . " cannot be uploaded\n\n";
+            }
+
+        } else {
+
+            foreach ($this->errors as $error) {
+                $log_string .= $error . "\n";
+            }
+
+        }
         
-        $output = ob_get_contents();
-        ob_end_clean();
-        file_put_contents("log.txt", $output, FILE_APPEND );
-        
-        echo implode("/", $a) . "/" . basename($fileName); 
+        file_put_contents($this->log, $log_string, FILE_APPEND );
+        echo $original_path . DIRECTORY_SEPARATOR . basename($file_name); 
     }
-
-
-?>
+}
+    
+// End of file

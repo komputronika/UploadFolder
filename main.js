@@ -14,22 +14,28 @@ picker.addEventListener('change', e => {
     listing.innerHTML = "None";
 
     // Get total of files in that folder
-    total = Array.from(e.target.files).length;
+    //total = Array.from(e.target.files).length;
+    total = picker.files.length;
     counter = 1;
 
     // Process every files
     // Note: Array.from() needed for Edge
 
-    for (let file of Array.from(e.target.files)) {
+    /* for (let file of Array.from(e.target.files)) {
 
         // Upload a file
         sendFile(file, file.webkitRelativePath);
 
-        /*item = document.createElement('li');
-        item.textContent = file.webkitRelativePath;
-        listing.appendChild(item);*/
+        //item = document.createElement('li');
+        //item.textContent = file.webkitRelativePath;
+        //listing.appendChild(item);
 
-    };
+    }; */
+
+    for (var i = 0; i < picker.files.length; i++) {
+        var file = picker.files[i];
+        sendFile(file, file.webkitRelativePath);
+    }
 
 });
 
@@ -71,10 +77,9 @@ sendFile = function(file, path) {
     // Set variable 
     formData.set('myfile', file); // One object file
     formData.set('path', path); // String of file's full path
-    formData.set('submit', "Submit");
 
     // Do request
-    request.open("POST", 'upload.php');
+    request.open("POST", 'process.php');
     request.send(formData);
 
 };
