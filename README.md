@@ -16,5 +16,6 @@ Supported browser: Chrome, Edge and Firefox
 
 ### Todo
 
-* Progress bar
-* Tidy up the PHP script
+* ~~Progress bar~~
+* Configurable Javascript
+* Composer style PHP class
