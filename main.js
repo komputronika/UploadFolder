@@ -80,4 +80,3 @@ sendFile = function(file, path) {
     request.send(formData);
 
 };
-c

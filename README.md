@@ -25,6 +25,55 @@ Supported browser: Chrome, Edge, Firefox, Android, Samsung and other browsers th
 
 <a href="https://imgur.com/bCUHbvv"><img src="https://i.imgur.com/bCUHbvv.png" title="source: imgur.com" /></a>
 
+### Core Codes
+
+#### index.html
+
+```html
+    <h3>Choose Folder</h3>
+    <div class="picker"><input type="file" id="picker" webkitdirectory multiple></div>
+    
+    ...
+    <script src="main.js"></script>
+```
+
+#### main.js
+
+```javascript
+    // On button input change (picker), process it
+    picker.addEventListener('change', e => {
+        ...
+        // Process every single file
+        for (var i = 0; i < picker.files.length; i++) {
+            var file = picker.files[i];
+            sendFile(file, file.webkitRelativePath);
+        }
+    });
+
+    // Function to send a file, call PHP backend 
+    sendFile = function(file, path) {
+        ...
+        // Set post variables 
+        formData.set('file', file); // One object file
+        formData.set('path', path); // String of local file's path 
+    
+        // Do request
+        request.open("POST", 'process.php');
+        request.send(formData);
+    
+    };
+```    
+
+#### process.php
+```php
+    <?php
+    require_once("include/upload.class.php");
+    
+    $up = new Upload();
+    $up->set_folder("upload");
+    $up->process($_POST["path"], $_FILES["file"]);
+    ?>
+```
 ### Todo
 
 * ~~Progress bar~~
