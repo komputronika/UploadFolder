@@ -1,6 +1,13 @@
 <?php
+/**
+ * Upload Folder
+ *
+ * @package     Upload Folder
+ * @author      Piepin <piepin@gmail.com>
+ * @link        https://github.com/komputronika/UploadFolder
+ */
 
-Class Upload 
+Class UploadFolder 
 {
 
     protected $folder = "upload";
