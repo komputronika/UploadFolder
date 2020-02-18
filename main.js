@@ -3,6 +3,7 @@ let picker = document.getElementById('picker');
 let listing = document.getElementById('listing');
 let box = document.getElementById('box');
 let elem = document.getElementById("myBar");
+let loader = document.getElementById("loader");
 let counter = 1;
 let total = 0;
 
@@ -16,6 +17,10 @@ picker.addEventListener('change', e => {
     // Get total of files in that folder
     total = picker.files.length;
     counter = 1;
+
+    // Display image animation
+    loader.style.display = "block";
+    loader.style.visibility = "visible";
 
     // Process every single file
     for (var i = 0; i < picker.files.length; i++) {
@@ -60,6 +65,8 @@ sendFile = function(file, path) {
             }
             if (counter >= total) {
                 listing.innerHTML = "Uploading " + total + " file(s) is done!";
+                loader.style.display = "none";
+                loader.style.visibility = "hidden";
             }
         }
     };
@@ -73,3 +80,4 @@ sendFile = function(file, path) {
     request.send(formData);
 
 };
+c
