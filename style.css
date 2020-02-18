@@ -46,3 +46,8 @@ code {
     font-weight: bold;
     border-radius: 5px;
 }
+
+#loader {
+    display: none;
+    visibility: hidden;
+}
